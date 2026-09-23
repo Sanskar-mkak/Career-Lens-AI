@@ -1,11 +1,17 @@
 import React from 'react';
-import { Outlet, Link } from 'react-router-dom';
+import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useTheme } from '@/context/ThemeContext';
 import { Sun, Moon } from 'lucide-react';
 import { ROUTES } from '@/app/routes/routes';
 
 export const PublicLayout: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
+  const location = useLocation();
+
+  // The Landing Page (Screen 01) coordinates its own approved 7-section layout (including Navbar & Footer)
+  if (location.pathname === ROUTES.LANDING) {
+    return <Outlet />;
+  }
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
@@ -61,3 +67,5 @@ export const PublicLayout: React.FC = () => {
     </div>
   );
 };
+
+export default PublicLayout;

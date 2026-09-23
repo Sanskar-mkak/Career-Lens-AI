@@ -1,24 +1,38 @@
 import React from 'react';
+import { Navbar } from './sections/Navbar';
+import { HeroSection } from './sections/HeroSection';
+import { TrustStrip } from './sections/TrustStrip';
+import { FeatureGrid } from './sections/FeatureGrid';
+import { ProductPreview } from './sections/ProductPreview';
+import { JourneyTeaser } from './sections/JourneyTeaser';
+import { Footer } from './sections/Footer';
+import styles from './LandingPage.module.css';
 
 export const LandingPage: React.FC = () => {
   return (
-    <div style={{ padding: '3rem 2rem', maxWidth: '800px', margin: '0 auto' }}>
-      <h1 style={{ fontSize: 'var(--font-size-3xl)', marginBottom: '0.5rem' }}>Landing Page</h1>
-      <p style={{ color: 'var(--color-text-secondary)', marginBottom: '1.5rem' }}>
-        Phase 1 Scaffolding — Full public landing experience to be implemented in Phase 2.
-      </p>
-      <div
-        style={{
-          padding: '1.5rem',
-          borderRadius: 'var(--radius-md)',
-          border: '1px solid var(--color-border)',
-          backgroundColor: 'var(--color-surface)',
-        }}
-      >
-        <span style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-primary)', fontWeight: 600 }}>
-          Screen 01 — Public Entry
-        </span>
-      </div>
+    <div className={styles.pageContainer}>
+      {/* Section 1: Navbar */}
+      <Navbar />
+
+      <main id="main-content">
+        {/* Section 2: Hero */}
+        <HeroSection />
+
+        {/* Section 3: Target Opportunities / Company Logo Strip */}
+        <TrustStrip />
+
+        {/* Section 4: Core Capabilities */}
+        <FeatureGrid />
+
+        {/* Section 5: Why CareerLens / Product Preview */}
+        <ProductPreview />
+
+        {/* Section 6: More Than a Tool / Final CTA */}
+        <JourneyTeaser />
+      </main>
+
+      {/* Section 7: Footer */}
+      <Footer />
     </div>
   );
 };
