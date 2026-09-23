@@ -1,115 +1,293 @@
-import React from 'react';
+/**
+ * CareerLens AI — Authenticated Application Shell (AppLayout)
+ *
+ * Provides:
+ * - Persistent desktop sidebar navigation (≥1024px)
+ * - Collapsible mobile drawer navigation (<1024px)
+ * - Sticky header with search, theme toggle, and neutral user profile badge
+ * - Outlet for authenticated routes (/dashboard, /resume, etc.)
+ *
+ * Source of Truth: Website Look/Dashboard.png and 07_Frontend-Architecture.md
+ */
+
+import React, { useState, useEffect } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useTheme } from '@/context/ThemeContext';
-import { Sun, Moon } from 'lucide-react';
+import {
+  LayoutDashboard,
+  FileText,
+  Briefcase,
+  Target,
+  Mic,
+  FolderKanban,
+  User,
+  Settings,
+  Sun,
+  Moon,
+  Search,
+  Bell,
+  Menu,
+  X,
+  Sparkles,
+  ArrowRight,
+} from 'lucide-react';
 import { ROUTES } from '@/app/routes/routes';
+import styles from './AppLayout.module.css';
 
-const NAV_LINKS = [
-  { label: 'Dashboard', path: ROUTES.DASHBOARD },
-  { label: 'Resume', path: ROUTES.RESUME },
-  { label: 'Resume Analysis', path: ROUTES.RESUME_ANALYSIS },
-  { label: 'Job Match', path: ROUTES.JOB_MATCH },
-  { label: 'Skill Gap', path: ROUTES.SKILL_GAP },
-  { label: 'Interview Setup', path: ROUTES.INTERVIEW_SETUP },
-  { label: 'Live Interview', path: ROUTES.INTERVIEW_LIVE },
-  { label: 'Interview Report', path: ROUTES.INTERVIEW_REPORT },
-  { label: 'Applications', path: ROUTES.APPLICATIONS },
-  { label: 'Profile', path: ROUTES.PROFILE },
-  { label: 'Settings', path: ROUTES.SETTINGS },
+interface NavItemConfig {
+  label: string;
+  path: string;
+  icon: React.ReactNode;
+  isActive: (pathname: string) => boolean;
+}
+
+const PRIMARY_NAV_ITEMS: NavItemConfig[] = [
+  {
+    label: 'Dashboard',
+    path: ROUTES.DASHBOARD,
+    icon: <LayoutDashboard size={18} />,
+    isActive: (p) => p === ROUTES.DASHBOARD,
+  },
+  {
+    label: 'Resume',
+    path: ROUTES.RESUME,
+    icon: <FileText size={18} />,
+    isActive: (p) => p.startsWith('/resume'),
+  },
+  {
+    label: 'Job Match',
+    path: ROUTES.JOB_MATCH,
+    icon: <Briefcase size={18} />,
+    isActive: (p) => p.startsWith('/job-match'),
+  },
+  {
+    label: 'Skill Gap',
+    path: ROUTES.SKILL_GAP,
+    icon: <Target size={18} />,
+    isActive: (p) => p.startsWith('/skill-gap'),
+  },
+  {
+    label: 'Mock Interview',
+    path: ROUTES.INTERVIEW_SETUP,
+    icon: <Mic size={18} />,
+    isActive: (p) => p.startsWith('/interview'),
+  },
+  {
+    label: 'Applications',
+    path: ROUTES.APPLICATIONS,
+    icon: <FolderKanban size={18} />,
+    isActive: (p) => p.startsWith('/applications'),
+  },
+];
+
+const SECONDARY_NAV_ITEMS: NavItemConfig[] = [
+  {
+    label: 'Profile',
+    path: ROUTES.PROFILE,
+    icon: <User size={18} />,
+    isActive: (p) => p.startsWith('/profile'),
+  },
+  {
+    label: 'Settings',
+    path: ROUTES.SETTINGS,
+    icon: <Settings size={18} />,
+    isActive: (p) => p.startsWith('/settings'),
+  },
 ];
 
 export const AppLayout: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
   const location = useLocation();
+  const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
+
+  // Close mobile drawer on route navigation
+  useEffect(() => {
+    setMobileDrawerOpen(false);
+  }, [location.pathname]);
+
+  // Close on Escape key press
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMobileDrawerOpen(false);
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <header
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '0.875rem 2rem',
-          borderBottom: '1px solid var(--color-border)',
-          backgroundColor: 'var(--color-surface)',
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
-          <Link
-            to={ROUTES.DASHBOARD}
-            style={{ fontWeight: 700, fontSize: 'var(--font-size-lg)', color: 'var(--color-primary)' }}
-          >
-            CareerLens AI
-          </Link>
-          <span style={{ fontSize: 'var(--font-size-xs)', color: 'var(--color-text-muted)' }}>
-            App Shell Scaffolding
-          </span>
-        </div>
+    <div className={styles.appShell}>
+      {/* Mobile Drawer Backdrop */}
+      {mobileDrawerOpen && (
+        <div
+          className={styles.backdrop}
+          onClick={() => setMobileDrawerOpen(false)}
+          aria-hidden="true"
+        />
+      )}
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <Link
-            to={ROUTES.LANDING}
-            style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-text-secondary)' }}
-          >
-            Public Site ←
+      {/* Sidebar Navigation */}
+      <aside
+        id="app-sidebar"
+        className={`${styles.sidebar} ${mobileDrawerOpen ? styles.sidebarOpen : ''}`}
+        aria-label="Application navigation"
+      >
+        {/* Brand Header */}
+        <div className={styles.sidebarHeader}>
+          <Link to={ROUTES.DASHBOARD} className={styles.brand}>
+            <div className={styles.brandBadge} aria-hidden="true">CL</div>
+            <div className={styles.brandInfo}>
+              <span className={styles.brandName}>CareerLens AI</span>
+              <span className={styles.brandTagline}>A smarter you. A brighter future.</span>
+            </div>
           </Link>
+
+          {/* Close button inside mobile drawer */}
           <button
-            onClick={toggleTheme}
-            aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: '2.25rem',
-              height: '2.25rem',
-              borderRadius: 'var(--radius-md)',
-              border: '1px solid var(--color-border)',
-              color: 'var(--color-text-primary)',
-              backgroundColor: 'var(--color-bg-subtle)',
-            }}
+            className={styles.closeMobileBtn}
+            onClick={() => setMobileDrawerOpen(false)}
+            aria-label="Close navigation sidebar"
           >
-            {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
+            <X size={18} />
           </button>
         </div>
-      </header>
 
-      {/* Navigation Bar for verifying routes */}
-      <nav
-        style={{
-          display: 'flex',
-          gap: '0.5rem',
-          padding: '0.5rem 2rem',
-          borderBottom: '1px solid var(--color-border)',
-          backgroundColor: 'var(--color-bg-subtle)',
-          overflowX: 'auto',
-          fontSize: 'var(--font-size-xs)',
-        }}
-      >
-        {NAV_LINKS.map((link) => {
-          const isActive = location.pathname === link.path;
-          return (
-            <Link
-              key={link.path}
-              to={link.path}
-              style={{
-                padding: '0.375rem 0.75rem',
-                borderRadius: 'var(--radius-sm)',
-                whiteSpace: 'nowrap',
-                backgroundColor: isActive ? 'var(--color-surface)' : 'transparent',
-                color: isActive ? 'var(--color-primary)' : 'var(--color-text-secondary)',
-                fontWeight: isActive ? 600 : 400,
-                border: isActive ? '1px solid var(--color-border)' : '1px solid transparent',
-              }}
+        {/* Primary Navigation */}
+        <nav className={styles.navGroup} aria-label="Main platform navigation">
+          {PRIMARY_NAV_ITEMS.map((item) => {
+            const active = item.isActive(location.pathname);
+            return (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`${styles.navItem} ${active ? styles.navItemActive : ''}`}
+                aria-current={active ? 'page' : undefined}
+              >
+                <span className={styles.navIcon} aria-hidden="true">{item.icon}</span>
+                <span>{item.label}</span>
+              </Link>
+            );
+          })}
+        </nav>
+
+        <div className={styles.divider} aria-hidden="true" />
+
+        {/* Secondary Navigation */}
+        <nav className={styles.navGroup} aria-label="User account navigation">
+          <div className={styles.navSectionTitle}>Account</div>
+          {SECONDARY_NAV_ITEMS.map((item) => {
+            const active = item.isActive(location.pathname);
+            return (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`${styles.navItem} ${active ? styles.navItemActive : ''}`}
+                aria-current={active ? 'page' : undefined}
+              >
+                <span className={styles.navIcon} aria-hidden="true">{item.icon}</span>
+                <span>{item.label}</span>
+              </Link>
+            );
+          })}
+        </nav>
+
+        {/* Upgrade Card (Matches Website Look/Dashboard.png) */}
+        <div className={styles.upgradeCard}>
+          <div className={styles.upgradeBadge}>
+            <Sparkles size={14} aria-hidden="true" />
+            <span>CareerLens Pro</span>
+          </div>
+          <p className={styles.upgradeDesc}>
+            Unlock advanced insights, tailored mock interviews, and AI intelligence.
+          </p>
+          <button
+            type="button"
+            className={styles.upgradeBtn}
+            onClick={(e) => e.preventDefault()}
+            aria-label="Upgrade to CareerLens Pro (preview only)"
+          >
+            <span>Upgrade Now</span>
+            <ArrowRight size={13} aria-hidden="true" />
+          </button>
+        </div>
+
+        {/* Sidebar Footer Quote */}
+        <div className={styles.sidebarFooter}>
+          <p className={styles.sidebarQuote}>
+            &ldquo;A better career is a more confident you.&rdquo;
+          </p>
+        </div>
+      </aside>
+
+      {/* Main Content Area */}
+      <div className={styles.mainContent}>
+        {/* Dashboard Header */}
+        <header className={styles.header} role="banner">
+          <div className={styles.headerLeft}>
+            {/* Mobile Hamburger Button */}
+            <button
+              className={styles.mobileMenuBtn}
+              onClick={() => setMobileDrawerOpen((prev) => !prev)}
+              aria-expanded={mobileDrawerOpen}
+              aria-controls="app-sidebar"
+              aria-label="Toggle navigation menu"
             >
-              {link.label}
-            </Link>
-          );
-        })}
-      </nav>
+              <Menu size={18} />
+            </button>
 
-      <main style={{ flex: 1 }}>
-        <Outlet />
-      </main>
+            {/* Global Search Bar */}
+            <div className={styles.searchBox}>
+              <span className={styles.searchIcon} aria-hidden="true">
+                <Search size={16} />
+              </span>
+              <input
+                type="search"
+                className={styles.searchInput}
+                placeholder="Search anything... (jobs, skills, companies...)"
+                aria-label="Global search across jobs, skills, and companies"
+              />
+            </div>
+          </div>
+
+          {/* Header Actions */}
+          <div className={styles.headerRight}>
+            <Link to={ROUTES.LANDING} className={styles.publicSiteLink}>
+              Public Site ←
+            </Link>
+
+            {/* Theme Toggle */}
+            <button
+              onClick={toggleTheme}
+              className={styles.iconBtn}
+              aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}
+            >
+              {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
+            </button>
+
+            {/* Notification Bell (UI-only presentation) */}
+            <button
+              type="button"
+              className={styles.iconBtn}
+              aria-label="Notifications — no unread notifications"
+              onClick={(e) => e.preventDefault()}
+            >
+              <Bell size={18} />
+            </button>
+
+            {/* User Profile Badge (Neutral presentation, no fabricated identity) */}
+            <div className={styles.userProfileBadge}>
+              <div className={styles.userAvatar} aria-hidden="true">CL</div>
+              <span className={styles.userGreeting}>Welcome back</span>
+            </div>
+          </div>
+        </header>
+
+        {/* Main Outlet */}
+        <main className={styles.pageContent} id="main-content">
+          <Outlet />
+        </main>
+      </div>
     </div>
   );
 };
+
+export default AppLayout;
