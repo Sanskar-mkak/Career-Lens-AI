@@ -1,0 +1,114 @@
+@import "./tokens.css";
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--color-bg);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+
+  background:
+    var(--gradient-background),
+    var(--color-bg);
+
+  color: var(--color-text-primary);
+
+  font-family: var(--font-primary);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+
+  transition:
+    background-color var(--duration-slow) var(--ease-standard),
+    color var(--duration-slow) var(--ease-standard);
+
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  border: 0;
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img,
+svg,
+canvas {
+  display: block;
+  max-width: 100%;
+}
+
+::selection {
+  background: var(--color-primary);
+  color: white;
+}
+
+.sidebar__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sidebar__action,
+.sidebar__actions button {
+  width: 42px;
+  height: 42px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: var(--radius-md);
+
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+
+  color: var(--color-text-secondary);
+
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+
+  box-shadow: var(--glass-highlight);
+
+  transition:
+    transform var(--duration-fast) var(--ease-standard),
+    background var(--duration-normal) var(--ease-standard),
+    color var(--duration-normal) var(--ease-standard),
+    border-color var(--duration-normal) var(--ease-standard);
+}
+
+.sidebar__action:hover,
+.sidebar__actions button:hover {
+  transform: translateY(-2px);
+
+  background: var(--glass-bg-hover);
+  color: var(--color-primary);
+
+  border-color: var(--glass-border-soft);
+
+  box-shadow:
+    var(--glass-highlight),
+    var(--glow-primary);
+}
