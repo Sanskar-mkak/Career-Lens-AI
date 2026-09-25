@@ -12,7 +12,7 @@
    ========================================================================== */
 
 .authPage {
-  min-height: 100vh;
+  flex: 1;
   display: flex;
   flex-direction: column;
   background-color: var(--color-bg);
@@ -103,7 +103,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2.5rem 3rem;
+  padding: 1.5rem 2.5rem;
   background-color: var(--color-bg);
 }
 
@@ -684,9 +684,9 @@
   }
 
   .formPanel {
-    padding: 2rem 1.5rem;
-    align-items: flex-start;
-    padding-top: 3rem;
+    padding: 1.5rem 1.5rem;
+    align-items: center;
+    justify-content: center;
   }
 
   .formCard {

@@ -103,6 +103,15 @@
   color: var(--color-primary);
 }
 
+.mascotCanvasBox {
+  width: 180px;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
 .mascotPlaceholder {
   width: 130px;
   height: 130px;

@@ -10,10 +10,7 @@
 
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useTheme } from '@/context/ThemeContext';
 import {
-  Sun,
-  Moon,
   Mail,
   Lock,
   Eye,
@@ -135,8 +132,6 @@ const LinkedInIcon: React.FC = () => (
 /* ------------------------------------------------------------------ */
 
 export const RegisterPage: React.FC = () => {
-  const { theme, toggleTheme } = useTheme();
-
   const [fields, setFields] = useState<RegisterFormFields>({
     fullName: '',
     email: '',
@@ -179,21 +174,6 @@ export const RegisterPage: React.FC = () => {
 
   return (
     <div className={styles.authPage}>
-      {/* ── Minimal Auth Navbar ── */}
-      <nav className={styles.authNav} aria-label="Authentication navigation">
-        <Link to={ROUTES.LANDING} className={styles.brand} aria-label="CareerLens AI — go to home">
-          <div className={styles.brandBadge} aria-hidden="true">CL</div>
-          <span>CareerLens AI</span>
-        </Link>
-        <button
-          onClick={toggleTheme}
-          className={styles.themeBtn}
-          aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}
-        >
-          {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
-        </button>
-      </nav>
-
       {/* ── Two-Panel Body ── */}
       <div className={styles.authBody}>
         {/* ── Left: Form Panel ── */}

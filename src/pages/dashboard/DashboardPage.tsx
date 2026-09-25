@@ -18,12 +18,12 @@ import {
   FolderKanban,
   ArrowRight,
   Clock,
-  Sparkles,
-  Bot,
+  Circle,
   Compass,
   CheckCircle2,
-  Circle,
+  Sparkles,
 } from 'lucide-react';
+import { MascotCanvas } from '@/mascot';
 import { ROUTES } from '@/app/routes/routes';
 import styles from './DashboardPage.module.css';
 
@@ -232,15 +232,16 @@ export const DashboardPage: React.FC = () => {
           <div className={styles.speechBubble}>
             Stay consistent! <span className={styles.speechBubbleText}>You&rsquo;re doing great.</span>
           </div>
-          {/*
-           * MASCOT PLACEHOLDER:
-           * The CareerLens AI mascot will be inserted here in a future phase.
-           * A clean standalone transparent PNG/SVG asset is required.
-           * When available: replace .mascotPlaceholder with an <img> tag.
-           */}
-          <div className={styles.mascotPlaceholder}>
-            <Bot size={36} className={styles.mascotIcon} strokeWidth={1.75} />
-            <span className={styles.mascotLabel}>Mascot</span>
+          <div className={styles.mascotCanvasBox}>
+            <MascotCanvas
+              semanticState="IDLE"
+              cameraPreset="compact"
+              width="180px"
+              height="180px"
+              showPlatform={false}
+              interactive={true}
+              enableMouseOrbit={true}
+            />
           </div>
         </div>
       </section>

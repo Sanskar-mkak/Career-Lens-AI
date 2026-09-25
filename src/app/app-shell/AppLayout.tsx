@@ -30,8 +30,10 @@ import {
   X,
   Sparkles,
   ArrowRight,
+  Bot,
 } from 'lucide-react';
 import { ROUTES } from '@/app/routes/routes';
+import { FloatingMascot, useMascot } from '@/mascot';
 import styles from './AppLayout.module.css';
 
 interface NavItemConfig {
@@ -97,6 +99,7 @@ const SECONDARY_NAV_ITEMS: NavItemConfig[] = [
 
 export const AppLayout: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
+  const { toggleFloatingMascot, floatingMascotVisible } = useMascot();
   const location = useLocation();
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
 
@@ -254,6 +257,20 @@ export const AppLayout: React.FC = () => {
               Public Site ←
             </Link>
 
+            {/* 3D Career Companion Toggle */}
+            <button
+              type="button"
+              onClick={toggleFloatingMascot}
+              className={styles.iconBtn}
+              aria-label="Toggle 3D Career Companion"
+              title="Career Companion (3D Mascot)"
+              style={{
+                color: floatingMascotVisible ? 'var(--color-primary)' : undefined,
+              }}
+            >
+              <Bot size={18} />
+            </button>
+
             {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
@@ -285,6 +302,9 @@ export const AppLayout: React.FC = () => {
         <main className={styles.pageContent} id="main-content">
           <Outlet />
         </main>
+
+        {/* Floating Career Companion */}
+        <FloatingMascot />
       </div>
     </div>
   );

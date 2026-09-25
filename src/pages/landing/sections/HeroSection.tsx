@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Sparkles, ArrowRight, Play, BarChart3, Lightbulb, Mic, Target } from 'lucide-react';
 import { ROUTES } from '@/app/routes/routes';
+import { MascotCanvas } from '@/mascot';
 import styles from '../LandingPage.module.css';
 
 export const HeroSection: React.FC = () => {
@@ -91,30 +92,17 @@ export const HeroSection: React.FC = () => {
               </div>
             </div>
 
-            {/* 
-              ==================================================================
-              MASCOT ASSET INTEGRATION CONTAINER
-              This dedicated container is specifically reserved for the future 
-              CareerLens 3D mascot render (mascot-light.png / mascot-dark.png).
-              When the standalone transparent asset is available, insert it here:
-              
-              <img 
-                src="/src/assets/branding/mascot.png" 
-                alt="CareerLens AI Mascot" 
-                className={styles.mascotImage}
+            {/* 3D CareerLens Interactive Mascot */}
+            <div className={styles.heroMascotCanvasWrapper}>
+              <MascotCanvas
+                semanticState="GREETING"
+                cameraPreset="hero"
+                width="100%"
+                height="100%"
+                showPlatform={true}
+                interactive={true}
+                enableMouseOrbit={true}
               />
-              ==================================================================
-            */}
-            <div className={styles.mascotPlaceholderBox}>
-              <div className={styles.mascotEmblem}>CL</div>
-              <h2 className={styles.mascotHeading}>CareerLens Mascot</h2>
-              <p className={styles.mascotCaption}>
-                Visual placeholder container reserved for the CareerLens 3D companion asset.
-              </p>
-              <code className={styles.mascotCodeBadge}>
-                {/* Visual anchor indicator */}
-                Reserved Asset Area (380x420px)
-              </code>
             </div>
 
             {/* Floating Status Pill 3: Mock Interview */}

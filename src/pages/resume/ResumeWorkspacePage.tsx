@@ -22,8 +22,8 @@ import {
   Lightbulb,
   AlertCircle,
   ArrowRight,
-  Bot,
 } from 'lucide-react';
+import { MascotCanvas } from '@/mascot';
 import { ROUTES } from '@/app/routes/routes';
 import styles from './ResumeWorkspacePage.module.css';
 
@@ -152,15 +152,16 @@ export const ResumeWorkspacePage: React.FC = () => {
           <div className={styles.speechBubble}>
             Upload your resume and <span className={styles.speechBubbleText}>make it stronger!</span>
           </div>
-          {/*
-           * MASCOT PLACEHOLDER:
-           * The CareerLens AI mascot will be inserted here in a future phase.
-           * A clean standalone transparent PNG/SVG asset is required.
-           * When available: replace .mascotPlaceholder with an <img> tag.
-           */}
-          <div className={styles.mascotPlaceholder}>
-            <Bot size={34} className={styles.mascotIcon} strokeWidth={1.75} />
-            <span className={styles.mascotLabel}>Mascot</span>
+          <div className={styles.mascotCanvasBox}>
+            <MascotCanvas
+              semanticState={selectedFile ? 'SUCCESS' : 'CURIOUS'}
+              cameraPreset="compact"
+              width="180px"
+              height="180px"
+              showPlatform={false}
+              interactive={true}
+              enableMouseOrbit={true}
+            />
           </div>
         </div>
       </section>

@@ -3,39 +3,54 @@ import { FileText, Crosshair, Mic, TrendingUp } from 'lucide-react';
 import styles from '../LandingPage.module.css';
 
 interface FeatureItem {
+  id: 'resume' | 'jobMatch' | 'interview' | 'skillGap';
   icon: React.ReactNode;
   iconBg: string;
   iconColor: string;
+  iconBorder: string;
+  iconGlow: string;
   title: string;
   description: string;
 }
 
 const FEATURES: FeatureItem[] = [
   {
-    icon: <FileText size={24} />,
-    iconBg: 'rgba(0, 102, 255, 0.12)',
-    iconColor: 'var(--color-primary)',
+    id: 'resume',
+    icon: <FileText size={28} strokeWidth={2} />,
+    iconBg: 'rgba(37, 99, 235, 0.12)',
+    iconColor: '#2563eb',
+    iconBorder: 'rgba(37, 99, 235, 0.25)',
+    iconGlow: 'rgba(37, 99, 235, 0.2)',
     title: 'Resume Intelligence',
     description: 'Get detailed feedback and improve your resume with structured analysis.',
   },
   {
-    icon: <Crosshair size={24} />,
+    id: 'jobMatch',
+    icon: <Crosshair size={28} strokeWidth={2} />,
     iconBg: 'rgba(16, 185, 129, 0.12)',
-    iconColor: 'var(--color-success)',
+    iconColor: '#10b981',
+    iconBorder: 'rgba(16, 185, 129, 0.25)',
+    iconGlow: 'rgba(16, 185, 129, 0.2)',
     title: 'Job Matching',
     description: 'Compare your resume with real job requirements and identify alignment.',
   },
   {
-    icon: <Mic size={24} />,
+    id: 'interview',
+    icon: <Mic size={28} strokeWidth={2} />,
     iconBg: 'rgba(139, 92, 246, 0.12)',
-    iconColor: '#8B5CF6',
+    iconColor: '#8b5cf6',
+    iconBorder: 'rgba(139, 92, 246, 0.25)',
+    iconGlow: 'rgba(139, 92, 246, 0.2)',
     title: 'AI Mock Interviews',
     description: 'Practice with realistic, adaptive interview sessions.',
   },
   {
-    icon: <TrendingUp size={24} />,
+    id: 'skillGap',
+    icon: <TrendingUp size={28} strokeWidth={2} />,
     iconBg: 'rgba(245, 158, 11, 0.12)',
-    iconColor: 'var(--color-warning)',
+    iconColor: '#f59e0b',
+    iconBorder: 'rgba(245, 158, 11, 0.25)',
+    iconGlow: 'rgba(245, 158, 11, 0.2)',
     title: 'Skill Gap & Roadmap',
     description: 'Compare resume evidence against target roles and identify areas to improve.',
   },
@@ -56,11 +71,22 @@ export const FeatureGrid: React.FC = () => {
         </div>
 
         <div className={styles.featureGrid}>
-          {FEATURES.map((feature, idx) => (
-            <div key={idx} className={styles.featureCard} tabIndex={0}>
+          {FEATURES.map((feature) => (
+            <div
+              key={feature.id}
+              className={`${styles.featureCard} ${styles[`featureCard_${feature.id}`]}`}
+              tabIndex={0}
+              role="article"
+              aria-label={feature.title}
+            >
               <div
                 className={styles.featureIconWrapper}
-                style={{ backgroundColor: feature.iconBg, color: feature.iconColor }}
+                style={{
+                  backgroundColor: feature.iconBg,
+                  color: feature.iconColor,
+                  borderColor: feature.iconBorder,
+                  boxShadow: `0 4px 14px ${feature.iconGlow}`,
+                }}
                 aria-hidden="true"
               >
                 {feature.icon}
